@@ -1,0 +1,42 @@
+{
+  "name": "class-sheet",
+  "version": "0.0.1",
+  "description": "Generates image from class sheet data",
+  "main": "index.js",
+  "scripts": {
+    "test": "xo"
+  },
+  "devDependencies": {
+    "xo": "^0.9.0"
+  },
+  "xo": {
+    "space": 4,
+    "rules": {
+      "no-multi-spaces": [
+        1,
+        {
+          "exceptions": {
+            "VariableDeclarator": true
+          }
+        }
+      ],
+      "key-spacing": [
+        2,
+        {"align": "value"}
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/quietshu/class-sheet"
+  },
+  "author": "Shu Ding <ds303077135@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/quietshu/class-sheet/issues"
+  },
+  "homepage": "https://github.com/quietshu/class-sheet",
+  "dependencies": {
+    "canvas": "^1.2.9"
+  }
+}
