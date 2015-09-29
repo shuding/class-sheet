@@ -31,7 +31,7 @@ Code style:
 
 As a server with express.js:
 
-```
+```javascript
 var classSheet = require('class-sheet');
 
 router.get('/:course_data', function (req, res, next) {
@@ -42,7 +42,7 @@ router.get('/:course_data', function (req, res, next) {
 
 As an independent tool:
 
-```
+```javascript
 var classSheet = require('class-sheet');
 
 // output the base64 result
@@ -53,7 +53,7 @@ console.log(classSheet.image(course_data));
 
 A JSON string, i.e.:
 
-```
+```javascript
 course_data = '{\
   "courses":\
     [\
