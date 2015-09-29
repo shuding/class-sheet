@@ -1,6 +1,7 @@
 # class-sheet
 
 [![npm version](https://badge.fury.io/js/class-sheet.svg)](http://badge.fury.io/js/class-sheet)
+[![Build Status](https://api.travis-ci.org/quietshu/class-sheet.svg?branch=master)](https://travis-ci.org/quietshu/class-sheet)
 [![XO: Linted](https://img.shields.io/badge/xo-linted-blue.svg)](https://github.com/sindresorhus/xo)
 
 __Under construction.__
@@ -73,7 +74,7 @@ course_data = '{\
 
 Then calling `classSheet.image` with `course_data` will get the image below (as base64 data):
 
-![1.png](example/1.png)
+![1.png](https://github.com/quietshu/class-sheet/raw/master/example/1.png)
 
 Notice you can get the JSON string by calling `JSON.stringify(course_object_data)`.
 
