@@ -12,23 +12,33 @@ var font = new Canvas.Font('SourceHanSans', path.join(__dirname, 'static', 'Sour
 font.addFace(path.join(__dirname, 'static', 'SourceHanSansCN-Normal.otf'), 'normal');
 
 var FIXED_OPTIONS = {
-    'background-color':        '#f5f5f5',
-    'font-family':             '"SourceHanSans"',
-    'width':                   320,
-    'height':                  640,
-    'line-color':              '#ccc',
-    'header-height':           40,
-    'header-line-color':       '#000',
-    'sidebar-width':           30,
-    'sidebar-line-color':      '#000',
-    'days':                    5,
-    'sections':                14,
-    'course-background-color': '#fff'
+    'font-family': '"SourceHanSans"'
 };
 
 var DEFAULT_OPTIONS = {
-    'courses':     [],
-    'day-content': ['一', '二', '三', '四', '五']
+    'courses':                 [],
+    'lines':                   [],
+    'custom-line-color':       'red',
+    'day-content':             ['一', '二', '三', '四', '五'],
+    'width':                   320,
+    'height':                  640,
+    'line-color':              '#ccc',
+    'text-color':              '#000',
+    'font-size':               12,
+    'info-text-color':         '#555',
+    'info-font-size':          10,
+    'background-color':        '#f5f5f5',
+    'header-height':           40,
+    'header-line-color':       '#000',
+    'header-text-color':       '#000',
+    'header-font-size':        15,
+    'sidebar-width':           30,
+    'sidebar-line-color':      '#000',
+    'sidebar-text-color':      '#000',
+    'sidebar-font-size':       12,
+    'days':                    5,
+    'sections':                14,
+    'course-background-color': '#fff'
 };
 
 function handleOptions(opts) {
@@ -78,9 +88,9 @@ function render(data, res) {
     ctx.stroke();
 
     // Days
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = options['header-text-color'];
     ctx.textAlign = 'center';
-    ctx.font      = '15px ' + options['font-family'];
+    ctx.font      = options['header-font-size'] + 'px ' + options['font-family'];
     for (i = 0; i < options['day-content'].length; ++i) {
         ctx.fillText(options['day-content'][i], options['sidebar-width'] + rowWidth * (i + 0.5), options['header-height'] - 15);
     }
@@ -120,39 +130,87 @@ function render(data, res) {
     }
     ctx.stroke();
 
-    ctx.font      = '12px ' + options['font-family'];
     ctx.textAlign = 'center';
     for (i = 0; i < options.courses.length; ++i) {
         if (options.courses[i].section) {
             st            = options.courses[i].st - 1;
             ed            = options.courses[i].ed - 1;
-            ctx.fillStyle = options['course-background-color'];
+            ctx.font      = options['font-size'] + 'px ' + options['font-family'];
+            ctx.fillStyle = options.courses[i]['background-color'] || options['course-background-color'];
             ctx.fillRect(options['sidebar-width'] + options.courses[i].day * rowWidth + 1, options['header-height'] + halfLineHeight * (st + lineHeightSums[st]) + 1, rowWidth - 2, (ed - st + 1) * halfLineHeight * 2 - 2);
-            ctx.fillStyle = '#000';
 
-            var line = '';
-            var name = options.courses[i].name;
-            var x    = options['sidebar-width'] + options.courses[i].day * rowWidth + rowWidth * 0.5;
-            var y    = options['header-height'] + halfLineHeight * (st + lineHeightSums[st]) + halfLineHeight;
+            var testLine;
+            var metrics;
+            var testWidth;
+            var line      = '';
+            var name      = options.courses[i].name;
+            var x         = options['sidebar-width'] + options.courses[i].day * rowWidth + rowWidth * 0.5;
+            var y         = options['header-height'] + halfLineHeight * (st + lineHeightSums[st]) + halfLineHeight;
+            ctx.fillStyle = options.courses[i]['text-color'] || options['text-color'];
 
             for (j = 0; j < name.length; j++) {
-                var testLine  = line + name[j];
-                var metrics   = ctx.measureText(testLine);
-                var testWidth = metrics.width;
-                if (testWidth > rowWidth && j > 0) {
+                if (name[j] !== '\n') {
+                    testLine = line + name[j];
+                }
+                metrics   = ctx.measureText(testLine);
+                testWidth = metrics.width;
+                if (testWidth > (rowWidth - 4) && j > 0 || name[j] === '\n') {
                     ctx.fillText(line, x, y);
-                    line = name[j];
-                    y += halfLineHeight;
+                    if (name[j] !== '\n') {
+                        line = name[j];
+                    } else {
+                        line = '';
+                    }
+                    y += Number(options['font-size']) * 1.6;
                 } else {
                     line = testLine;
                 }
             }
             ctx.fillText(line, x, y);
+            y += Number(options['font-size']) * 1.6;
+
+            if (options.courses[i].info && options.courses[i].info.length) {
+                line          = '';
+                name          = options.courses[i].info;
+                x             = options['sidebar-width'] + options.courses[i].day * rowWidth + rowWidth * 0.5;
+                ctx.font      = options['info-font-size'] + 'px ' + options['font-family'];
+                ctx.fillStyle = options['info-text-color'];
+
+                for (j = 0; j < name.length; j++) {
+                    if (name[j] !== '\n') {
+                        testLine = line + name[j];
+                    }
+                    metrics   = ctx.measureText(testLine);
+                    testWidth = metrics.width;
+                    if (testWidth > (rowWidth - 10) && j > 0 || name[j] === '\n') {
+                        ctx.fillText(line, x, y);
+                        if (name[j] !== '\n') {
+                            line = name[j];
+                        } else {
+                            line = '';
+                        }
+                        y += Number(options['info-font-size']) * 1.6;
+                    } else {
+                        line = testLine;
+                    }
+                }
+                ctx.fillText(line, x, y);
+            }
         }
     }
 
-    ctx.fillStyle = '#000';
+    // Custom lines
+    ctx.strokeStyle = options['custom-line-color'];
+    ctx.beginPath();
+    for (i = 0; i < options.lines.length; ++i) {
+        ctx.moveTo(0, options['header-height'] + halfLineHeight * (options.lines[i] + lineHeightSums[options.lines[i]]));
+        ctx.lineTo(options.width, options['header-height'] + halfLineHeight * (options.lines[i] + lineHeightSums[options.lines[i]]));
+    }
+    ctx.stroke();
+
     // Section numbers
+    ctx.fillStyle = options['sidebar-text-color'];
+    ctx.font      = options['sidebar-font-size'] + 'px ' + options['font-family'];
     for (i = 1; i <= options.sections; ++i) {
         ctx.fillText(String(i), options['sidebar-width'] * 0.5, halfLineHeight * (i + lineHeightSums[i] + 1.25 - (lineHeights[i] || 0) * 0.5));
     }

@@ -8,25 +8,6 @@ __Under construction.__
 
 A package that generates image from class-sheet data.
 
-## Usage
-
-### Install
-
-From NPM:
-- `$ npm install class-sheet`
-
-From git repo:
-
-- install node-canvas: https://github.com/Automattic/node-canvas/wiki
-- `$ git clone git@github.com:quietshu/class-sheet.git`
-- `$ npm install`
-
-### Test
-
-Code style:
-
-`$ npm test` (current only `xo.js`)
-
 ## Example
 
 As a server with express.js:
@@ -77,6 +58,82 @@ Then calling `classSheet.image` with `course_data` will get the image below (as 
 ![1.png](https://github.com/quietshu/class-sheet/raw/master/example/1.png)
 
 Notice you can get the JSON string by calling `JSON.stringify(course_object_data)`.
+
+Another example:
+
+![2.png](https://github.com/quietshu/class-sheet/raw/master/example/2.png)
+
+## Usage
+
+### Install
+
+From NPM:
+- `$ npm install class-sheet`
+
+From git repo:
+
+- install node-canvas: https://github.com/Automattic/node-canvas/wiki
+- `$ git clone git@github.com:quietshu/class-sheet.git`
+- `$ npm install`
+
+### Test
+
+Code style:
+
+`$ npm test` (current only `xo.js`)
+
+### Options
+
+- `courses`
+  - courses data
+  - default: `[]`
+  - example: `[{"name":"Modern Art","day":2,"section":"1-3"}, {"name":"Computer Graphics","day":"4","section":"9-10","text-color":"red"}]`
+- `lines`
+  - horizontal lines
+  - default: `[]`
+  - example: `[5, 10]` will drop lines under section 5 and section 10
+- `custom-line-color`
+  - default: `'red'`
+- `day-content`
+  - default: `['一', '二', '三', '四', '五']`
+- `width`
+  - default: `320`
+- `height`
+  - default: `640`
+- `line-color`
+  - default: `'#ccc'`
+- `text-color`
+  - default: `'#000'`
+- `font-size`
+  - default: `12`
+- `info-text-color`
+  - default: `'#555'`
+- `info-font-size`
+  - default: `10`
+- `background-color`
+  - default: `'#f5f5f5'`
+- `header-height`
+  - default: `40`
+- `header-line-color`
+  - default: `'#000'`
+- `header-text-color`
+  - default: `'#000'`
+- `header-font-size`
+  - default: `15`
+- `sidebar-width`
+  - default: `30`
+- `sidebar-line-color`
+  - default: `'#000'`
+- `sidebar-text-color`
+  - default: `'#000'`
+- `sidebar-font-size`
+  - default: `12`
+- `days`
+  - default: `5`
+- `sections`
+  - default: `14`
+- `course-background-color`
+  - default: `'#fff'`
 
 ## Acknowledgements
 
